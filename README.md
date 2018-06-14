@@ -1,6 +1,6 @@
-# ArPy
+# ArPyLearning
 
-ArPy is a light-weight Python library for
+ArPyLearning is a light-weight Python library for
 communicating with [Arduino microcontroller boards](http://www.arduino.cc/) from a connected computer using
 standard serial IO, either over a physical wire 
 or wirelessly. It is written using a custom protocol, similar to [Firmata](http://firmata.org/wiki/Main_Page).
