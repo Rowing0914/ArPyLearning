@@ -11,6 +11,12 @@ So please do not forget to check this out as well! Your star will be appreciated
 
 This allows a user to have an easy prototyping in dev and a maintainance of the connectivity with some webframework like Flask.
 
+# Deep Reinforcement Learning
+## DQN(Deep Q Network)
+- check the code inside `./DRL/src/app.py`
+- Agent is defined in DQN.py
+
+# Arduino Control
 ## Simple usage example (LED blink)
 ```python
 #!/usr/bin/env python
