@@ -7,10 +7,9 @@ class env:
         self.action = ['go_further_forward', 'go_forward', 'go_backward', 'go_further_backward']
 
     def _generator(self):
-        val = get_distance(port="/dev/cu.wchusbserial14310")
+        return get_distance()
         # return np.random.rand(self.n_episode).flatten()
         # return np.random.randint(100)
-        return val
 
     def step(self, action):
         self._action(action)

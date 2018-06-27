@@ -1,11 +1,9 @@
-import gym
+# from cliff_walking import CliffWalkingEnv
+# import gym
 import itertools
 import matplotlib
-import numpy as np
-import pandas as pd
 import sys
 from collections import defaultdict
-from cliff_walking import CliffWalkingEnv
 from environment import env
 
 def make_epsilon_greedy_policy(Q, epsilon, nA):
@@ -24,7 +22,7 @@ def make_epsilon_greedy_policy(Q, epsilon, nA):
     
     """
     def policy_fn(observation):
-        print(observation)
+        print("observation: ", observation)
         A = np.ones(nA, dtype=float) * epsilon / nA
         best_action = np.argmax(Q[observation])
         A[best_action] += (1.0 - epsilon)
@@ -77,7 +75,8 @@ def q_learning(env, num_episodes, discount_factor=1.0, alpha=0.5, epsilon=0.1):
             next_state, reward, done = env.step(action)
             
             # TD Update
-            best_next_action = np.argmax(Q[next_state])    
+            best_next_action = np.argmax(Q[next_state])
+            print("Decided Action: ", best_next_action)
             td_target = reward + discount_factor * Q[next_state][best_next_action]
             td_delta = td_target - Q[state][action]
             Q[state][action] += alpha * td_delta
@@ -94,4 +93,4 @@ def q_learning(env, num_episodes, discount_factor=1.0, alpha=0.5, epsilon=0.1):
 n_episode = 4
 env = env(n_episode)
 Q = q_learning(env, 500)
-print(Q)
+print("Q value: ", Q)
