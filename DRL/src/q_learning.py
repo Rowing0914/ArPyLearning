@@ -1,10 +1,10 @@
 # from cliff_walking import CliffWalkingEnv
 # import gym
 import itertools
-import matplotlib
 import sys
 from collections import defaultdict
 from environment import env
+import numpy as np
 
 def make_epsilon_greedy_policy(Q, epsilon, nA):
     """
