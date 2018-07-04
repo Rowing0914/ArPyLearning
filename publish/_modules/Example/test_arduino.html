@@ -1,0 +1,337 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Example.test_arduino &#8212; src  documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for Example.test_arduino</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">unittest</span>
+
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="MockSerial"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.MockSerial">[docs]</a><span class="k">class</span> <span class="nc">MockSerial</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">baud</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">port</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">baud</span> <span class="o">=</span> <span class="n">baud</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_open</span> <span class="o">=</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="MockSerial.flush"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.MockSerial.flush">[docs]</a>    <span class="k">def</span> <span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="MockSerial.write"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.MockSerial.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MockSerial.isOpen"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.MockSerial.isOpen">[docs]</a>    <span class="k">def</span> <span class="nf">isOpen</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_open</span></div>
+
+<div class="viewcode-block" id="MockSerial.close"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.MockSerial.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_open</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_open</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Mock serial port is already closed.&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MockSerial.readline"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.MockSerial.readline">[docs]</a>    <span class="k">def</span> <span class="nf">readline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        @TODO: This does not take timeout into account at all.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MockSerial.reset_mock"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.MockSerial.reset_mock">[docs]</a>    <span class="k">def</span> <span class="nf">reset_mock</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="MockSerial.push_line"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.MockSerial.push_line">[docs]</a>    <span class="k">def</span> <span class="nf">push_line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">term</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\r\n</span><span class="s1">&#39;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">+</span> <span class="n">term</span><span class="p">)</span></div></div>
+
+
+<span class="n">INPUT</span> <span class="o">=</span> <span class="s2">&quot;INPUT&quot;</span>
+<span class="n">OUTPUT</span> <span class="o">=</span> <span class="s2">&quot;OUTPUT&quot;</span>
+<span class="n">LOW</span> <span class="o">=</span> <span class="s2">&quot;LOW&quot;</span>
+<span class="n">HIGH</span> <span class="o">=</span> <span class="s2">&quot;HIGH&quot;</span>
+<span class="n">READ_LOW</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">READ_HIGH</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">MSBFIRST</span> <span class="o">=</span> <span class="s2">&quot;MSBFIRST&quot;</span>
+<span class="n">LSBFIRST</span> <span class="o">=</span> <span class="s2">&quot;LSBFIRST&quot;</span>
+
+
+<div class="viewcode-block" id="ArduinoTestCase"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.ArduinoTestCase">[docs]</a><span class="k">class</span> <span class="nc">ArduinoTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ArduinoTestCase.setUp"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.ArduinoTestCase.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">Arduino.arduino</span> <span class="k">import</span> <span class="n">Arduino</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span> <span class="o">=</span> <span class="n">MockSerial</span><span class="p">(</span><span class="mi">9600</span><span class="p">,</span> <span class="s1">&#39;/dev/ttyACM0&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">board</span> <span class="o">=</span> <span class="n">Arduino</span><span class="p">(</span><span class="n">sr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="TestArduino"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.TestArduino">[docs]</a><span class="k">class</span> <span class="nc">TestArduino</span><span class="p">(</span><span class="n">ArduinoTestCase</span><span class="p">):</span>
+
+<div class="viewcode-block" id="TestArduino.parse_cmd_sr"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.TestArduino.parse_cmd_sr">[docs]</a>    <span class="k">def</span> <span class="nf">parse_cmd_sr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd_str</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">cmd_str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;@&#39;</span>
+        <span class="n">first_index</span> <span class="o">=</span> <span class="n">cmd_str</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;%&#39;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">first_index</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">assert</span> <span class="n">cmd_str</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span> <span class="o">==</span> <span class="s1">&#39;$!&#39;</span>
+        <span class="c1"># Skip over the @ and read up to but not including the %.</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="n">cmd_str</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">first_index</span><span class="p">]</span>
+        <span class="c1"># Skip over the first % and ignore the trailing $!.</span>
+        <span class="n">args_str</span> <span class="o">=</span> <span class="n">cmd_str</span><span class="p">[</span><span class="n">first_index</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">args_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;%&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">args</span></div>
+
+<div class="viewcode-block" id="TestArduino.test_close"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.TestArduino.test_close">[docs]</a>    <span class="k">def</span> <span class="nf">test_close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="c1"># Call again, should skip calling close.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TestArduino.test_version"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.TestArduino.test_version">[docs]</a>    <span class="k">def</span> <span class="nf">test_version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">Arduino.arduino</span> <span class="k">import</span> <span class="n">build_cmd_str</span>
+        <span class="n">expected_version</span> <span class="o">=</span> <span class="s2">&quot;version&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">push_line</span><span class="p">(</span><span class="n">expected_version</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">version</span><span class="p">(),</span> <span class="n">expected_version</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">build_cmd_str</span><span class="p">(</span><span class="s1">&#39;version&#39;</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="TestArduino.test_pinMode_input"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.TestArduino.test_pinMode_input">[docs]</a>    <span class="k">def</span> <span class="nf">test_pinMode_input</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">Arduino.arduino</span> <span class="k">import</span> <span class="n">build_cmd_str</span>
+        <span class="n">pin</span> <span class="o">=</span> <span class="mi">9</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">pinMode</span><span class="p">(</span><span class="n">pin</span><span class="p">,</span> <span class="n">INPUT</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">build_cmd_str</span><span class="p">(</span><span class="s1">&#39;pm&#39;</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="n">pin</span><span class="p">,)))</span></div>
+
+<div class="viewcode-block" id="TestArduino.test_pinMode_output"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.TestArduino.test_pinMode_output">[docs]</a>    <span class="k">def</span> <span class="nf">test_pinMode_output</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">Arduino.arduino</span> <span class="k">import</span> <span class="n">build_cmd_str</span>
+        <span class="n">pin</span> <span class="o">=</span> <span class="mi">9</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">pinMode</span><span class="p">(</span><span class="n">pin</span><span class="p">,</span> <span class="n">OUTPUT</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">build_cmd_str</span><span class="p">(</span><span class="s1">&#39;pm&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">pin</span><span class="p">,)))</span></div>
+
+<div class="viewcode-block" id="TestArduino.test_pulseIn_low"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.TestArduino.test_pulseIn_low">[docs]</a>    <span class="k">def</span> <span class="nf">test_pulseIn_low</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">Arduino.arduino</span> <span class="k">import</span> <span class="n">build_cmd_str</span>
+        <span class="n">expected_duration</span> <span class="o">=</span> <span class="mi">230</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">push_line</span><span class="p">(</span><span class="n">expected_duration</span><span class="p">)</span>
+        <span class="n">pin</span> <span class="o">=</span> <span class="mi">9</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">pulseIn</span><span class="p">(</span><span class="n">pin</span><span class="p">,</span> <span class="n">LOW</span><span class="p">),</span> <span class="n">expected_duration</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">build_cmd_str</span><span class="p">(</span><span class="s1">&#39;pi&#39;</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="n">pin</span><span class="p">,)))</span></div>
+
+<div class="viewcode-block" id="TestArduino.test_pulseIn_high"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.TestArduino.test_pulseIn_high">[docs]</a>    <span class="k">def</span> <span class="nf">test_pulseIn_high</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">Arduino.arduino</span> <span class="k">import</span> <span class="n">build_cmd_str</span>
+        <span class="n">expected_duration</span> <span class="o">=</span> <span class="mi">230</span>
+        <span class="n">pin</span> <span class="o">=</span> <span class="mi">9</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">push_line</span><span class="p">(</span><span class="n">expected_duration</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">pulseIn</span><span class="p">(</span><span class="n">pin</span><span class="p">,</span> <span class="n">HIGH</span><span class="p">),</span> <span class="n">expected_duration</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">build_cmd_str</span><span class="p">(</span><span class="s1">&#39;pi&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">pin</span><span class="p">,)))</span></div>
+
+<div class="viewcode-block" id="TestArduino.test_digitalRead"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.TestArduino.test_digitalRead">[docs]</a>    <span class="k">def</span> <span class="nf">test_digitalRead</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">Arduino.arduino</span> <span class="k">import</span> <span class="n">build_cmd_str</span>
+        <span class="n">pin</span> <span class="o">=</span> <span class="mi">9</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">push_line</span><span class="p">(</span><span class="n">READ_LOW</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">digitalRead</span><span class="p">(</span><span class="n">pin</span><span class="p">),</span> <span class="n">READ_LOW</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">build_cmd_str</span><span class="p">(</span><span class="s1">&#39;dr&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">pin</span><span class="p">,)))</span></div>
+
+<div class="viewcode-block" id="TestArduino.test_digitalWrite_low"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.TestArduino.test_digitalWrite_low">[docs]</a>    <span class="k">def</span> <span class="nf">test_digitalWrite_low</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">Arduino.arduino</span> <span class="k">import</span> <span class="n">build_cmd_str</span>
+        <span class="n">pin</span> <span class="o">=</span> <span class="mi">9</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">pin</span><span class="p">,</span> <span class="n">LOW</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">build_cmd_str</span><span class="p">(</span><span class="s1">&#39;dw&#39;</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="n">pin</span><span class="p">,)))</span></div>
+
+<div class="viewcode-block" id="TestArduino.test_digitalWrite_high"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.TestArduino.test_digitalWrite_high">[docs]</a>    <span class="k">def</span> <span class="nf">test_digitalWrite_high</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">Arduino.arduino</span> <span class="k">import</span> <span class="n">build_cmd_str</span>
+        <span class="n">pin</span> <span class="o">=</span> <span class="mi">9</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">pin</span><span class="p">,</span> <span class="n">HIGH</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">build_cmd_str</span><span class="p">(</span><span class="s1">&#39;dw&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">pin</span><span class="p">,)))</span></div>
+
+<div class="viewcode-block" id="TestArduino.test_melody"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.TestArduino.test_melody">[docs]</a>    <span class="k">def</span> <span class="nf">test_melody</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">Arduino.arduino</span> <span class="k">import</span> <span class="n">build_cmd_str</span>
+        <span class="n">pin</span> <span class="o">=</span> <span class="mi">9</span>
+        <span class="n">notes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;C4&quot;</span><span class="p">]</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="n">C4_NOTE</span> <span class="o">=</span> <span class="mi">262</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">Melody</span><span class="p">(</span><span class="n">pin</span><span class="p">,</span> <span class="n">notes</span><span class="p">,</span> <span class="p">[</span><span class="n">duration</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">build_cmd_str</span><span class="p">(</span><span class="s1">&#39;to&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">notes</span><span class="p">),</span> <span class="n">pin</span><span class="p">,</span> <span class="n">C4_NOTE</span><span class="p">,</span> <span class="n">duration</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">build_cmd_str</span><span class="p">(</span><span class="s1">&#39;nto&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">pin</span><span class="p">,)))</span></div>
+
+<div class="viewcode-block" id="TestArduino.test_shiftIn"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.TestArduino.test_shiftIn">[docs]</a>    <span class="k">def</span> <span class="nf">test_shiftIn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">Arduino.arduino</span> <span class="k">import</span> <span class="n">build_cmd_str</span>
+        <span class="n">dataPin</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="n">clockPin</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="n">pinOrder</span> <span class="o">=</span> <span class="n">MSBFIRST</span>
+        <span class="n">expected</span> <span class="o">=</span> <span class="mh">0xff</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">push_line</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">shiftIn</span><span class="p">(</span><span class="n">dataPin</span><span class="p">,</span> <span class="n">clockPin</span><span class="p">,</span> <span class="n">pinOrder</span><span class="p">),</span>
+            <span class="n">expected</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">build_cmd_str</span><span class="p">(</span><span class="s1">&#39;si&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">dataPin</span><span class="p">,</span> <span class="n">clockPin</span><span class="p">,</span> <span class="n">pinOrder</span><span class="p">,)))</span></div>
+
+<div class="viewcode-block" id="TestArduino.test_shiftOut"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.TestArduino.test_shiftOut">[docs]</a>    <span class="k">def</span> <span class="nf">test_shiftOut</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">Arduino.arduino</span> <span class="k">import</span> <span class="n">build_cmd_str</span>
+        <span class="n">dataPin</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="n">clockPin</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="n">pinOrder</span> <span class="o">=</span> <span class="n">MSBFIRST</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="mh">0xff</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">shiftOut</span><span class="p">(</span><span class="n">dataPin</span><span class="p">,</span> <span class="n">clockPin</span><span class="p">,</span> <span class="n">pinOrder</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">build_cmd_str</span><span class="p">(</span><span class="s1">&#39;so&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">dataPin</span><span class="p">,</span> <span class="n">clockPin</span><span class="p">,</span> <span class="n">pinOrder</span><span class="p">,</span> <span class="n">value</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="TestArduino.test_analogRead"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.TestArduino.test_analogRead">[docs]</a>    <span class="k">def</span> <span class="nf">test_analogRead</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">Arduino.arduino</span> <span class="k">import</span> <span class="n">build_cmd_str</span>
+        <span class="n">pin</span> <span class="o">=</span> <span class="mi">9</span>
+        <span class="n">expected</span> <span class="o">=</span> <span class="mi">1023</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">push_line</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">analogRead</span><span class="p">(</span><span class="n">pin</span><span class="p">),</span> <span class="n">expected</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">build_cmd_str</span><span class="p">(</span><span class="s1">&#39;ar&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">pin</span><span class="p">,)))</span></div>
+
+<div class="viewcode-block" id="TestArduino.test_analogWrite"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.TestArduino.test_analogWrite">[docs]</a>    <span class="k">def</span> <span class="nf">test_analogWrite</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">Arduino.arduino</span> <span class="k">import</span> <span class="n">build_cmd_str</span>
+        <span class="n">pin</span> <span class="o">=</span> <span class="mi">9</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="mi">255</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">analogWrite</span><span class="p">(</span><span class="n">pin</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">build_cmd_str</span><span class="p">(</span><span class="s1">&#39;aw&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">pin</span><span class="p">,</span> <span class="n">value</span><span class="p">)))</span></div></div>
+
+
+<div class="viewcode-block" id="TestServos"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.TestServos">[docs]</a><span class="k">class</span> <span class="nc">TestServos</span><span class="p">(</span><span class="n">ArduinoTestCase</span><span class="p">):</span>
+
+<div class="viewcode-block" id="TestServos.test_attach"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.TestServos.test_attach">[docs]</a>    <span class="k">def</span> <span class="nf">test_attach</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">Arduino.arduino</span> <span class="k">import</span> <span class="n">build_cmd_str</span>
+        <span class="n">pin</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">push_line</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
+        <span class="n">servo_min</span> <span class="o">=</span> <span class="mi">544</span>
+        <span class="n">servo_max</span> <span class="o">=</span> <span class="mi">2400</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">Servos</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">pin</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="n">servo_min</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="n">servo_max</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">build_cmd_str</span><span class="p">(</span><span class="s1">&#39;sva&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">pin</span><span class="p">,</span> <span class="n">servo_min</span><span class="p">,</span> <span class="n">servo_max</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="TestServos.test_detach"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.TestServos.test_detach">[docs]</a>    <span class="k">def</span> <span class="nf">test_detach</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">Arduino.arduino</span> <span class="k">import</span> <span class="n">build_cmd_str</span>
+        <span class="n">pin</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># Attach first.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">push_line</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">Servos</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">reset_mock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">Servos</span><span class="o">.</span><span class="n">detach</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">build_cmd_str</span><span class="p">(</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">position</span><span class="p">,)))</span></div>
+
+<div class="viewcode-block" id="TestServos.test_write"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.TestServos.test_write">[docs]</a>    <span class="k">def</span> <span class="nf">test_write</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">Arduino.arduino</span> <span class="k">import</span> <span class="n">build_cmd_str</span>
+        <span class="n">pin</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">angle</span> <span class="o">=</span> <span class="mi">90</span>
+        <span class="c1"># Attach first.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">push_line</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">Servos</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">reset_mock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">Servos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pin</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">build_cmd_str</span><span class="p">(</span><span class="s2">&quot;svw&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">angle</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="TestServos.test_writeMicroseconds"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.TestServos.test_writeMicroseconds">[docs]</a>    <span class="k">def</span> <span class="nf">test_writeMicroseconds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">Arduino.arduino</span> <span class="k">import</span> <span class="n">build_cmd_str</span>
+        <span class="n">pin</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">microseconds</span> <span class="o">=</span> <span class="mi">1500</span>
+        <span class="c1"># Attach first.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">push_line</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">Servos</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">reset_mock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">Servos</span><span class="o">.</span><span class="n">writeMicroseconds</span><span class="p">(</span><span class="n">pin</span><span class="p">,</span> <span class="n">microseconds</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">build_cmd_str</span><span class="p">(</span><span class="s2">&quot;svwm&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">microseconds</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="TestServos.test_read"><a class="viewcode-back" href="../../Example.html#Example.test_arduino.TestServos.test_read">[docs]</a>    <span class="k">def</span> <span class="nf">test_read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">Arduino.arduino</span> <span class="k">import</span> <span class="n">build_cmd_str</span>
+        <span class="n">pin</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">angle</span> <span class="o">=</span> <span class="mi">90</span>
+        <span class="c1"># Attach first.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">push_line</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">Servos</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">reset_mock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">push_line</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">Servos</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">pin</span><span class="p">),</span> <span class="n">angle</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mock_serial</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">build_cmd_str</span><span class="p">(</span><span class="s2">&quot;svr&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">position</span><span class="p">,)))</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,216 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>RL.Envs package &#8212; src  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="RL.Envs.Sensors package" href="RL.Envs.Sensors.html" />
+    <link rel="prev" title="RL package" href="RL.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="rl-envs-package">
+<h1>RL.Envs package<a class="headerlink" href="#rl-envs-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="RL.Envs.Sensors.html">RL.Envs.Sensors package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="RL.Envs.Sensors.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RL.Envs.Sensors.html#module-RL.Envs.Sensors.dist_sensor">RL.Envs.Sensors.dist_sensor module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RL.Envs.Sensors.html#module-RL.Envs.Sensors">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-RL.Envs.cliff_walking">
+<span id="rl-envs-cliff-walking-module"></span><h2>RL.Envs.cliff_walking module<a class="headerlink" href="#module-RL.Envs.cliff_walking" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="RL.Envs.cliff_walking.CliffWalkingEnv">
+<em class="property">class </em><code class="descclassname">RL.Envs.cliff_walking.</code><code class="descname">CliffWalkingEnv</code><a class="reference internal" href="_modules/RL/Envs/cliff_walking.html#CliffWalkingEnv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RL.Envs.cliff_walking.CliffWalkingEnv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">gym.envs.toy_text.discrete.DiscreteEnv</span></code></p>
+<dl class="attribute">
+<dt id="RL.Envs.cliff_walking.CliffWalkingEnv.metadata">
+<code class="descname">metadata</code><em class="property"> = {'render.modes': ['human', 'ansi']}</em><a class="headerlink" href="#RL.Envs.cliff_walking.CliffWalkingEnv.metadata" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RL.Envs.cliff_walking.CliffWalkingEnv.render">
+<code class="descname">render</code><span class="sig-paren">(</span><em>mode='human'</em>, <em>close=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RL/Envs/cliff_walking.html#CliffWalkingEnv.render"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RL.Envs.cliff_walking.CliffWalkingEnv.render" title="Permalink to this definition">¶</a></dt>
+<dd><p>Renders the environment.</p>
+<p>The set of supported modes varies per environment. (And some
+environments do not support rendering at all.) By convention,
+if mode is:</p>
+<ul class="simple">
+<li>human: render to the current display or terminal and
+return nothing. Usually for human consumption.</li>
+<li>rgb_array: Return an numpy.ndarray with shape (x, y, 3),
+representing RGB values for an x-by-y pixel image, suitable
+for turning into a video.</li>
+<li>ansi: Return a string (str) or StringIO.StringIO containing a
+terminal-style text representation. The text can include newlines
+and ANSI escape sequences (e.g. for colors).</li>
+</ul>
+<dl class="docutils">
+<dt>Note:</dt>
+<dd><dl class="first last docutils">
+<dt>Make sure that your class’s metadata ‘render.modes’ key includes</dt>
+<dd>the list of supported modes. It’s recommended to call super()
+in implementations to use the functionality of this method.</dd>
+</dl>
+</dd>
+<dt>Args:</dt>
+<dd>mode (str): the mode to render with
+close (bool): close all open renderings</dd>
+</dl>
+<p>Example:</p>
+<dl class="docutils">
+<dt>class MyEnv(Env):</dt>
+<dd><p class="first">metadata = {‘render.modes’: [‘human’, ‘rgb_array’]}</p>
+<dl class="last docutils">
+<dt>def render(self, mode=’human’):</dt>
+<dd><dl class="first last docutils">
+<dt>if mode == ‘rgb_array’:</dt>
+<dd>return np.array(…) # return RGB frame suitable for video</dd>
+<dt>elif mode is ‘human’:</dt>
+<dd>… # pop up a window and render</dd>
+<dt>else:</dt>
+<dd>super(MyEnv, self).render(mode=mode) # just raise an exception</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-RL.Envs.environment">
+<span id="rl-envs-environment-module"></span><h2>RL.Envs.environment module<a class="headerlink" href="#module-RL.Envs.environment" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="RL.Envs.environment.env">
+<em class="property">class </em><code class="descclassname">RL.Envs.environment.</code><code class="descname">env</code><span class="sig-paren">(</span><em>n_episode</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RL/Envs/environment.html#env"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RL.Envs.environment.env" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="RL.Envs.environment.env.action_space">
+<code class="descname">action_space</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/RL/Envs/environment.html#env.action_space"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RL.Envs.environment.env.action_space" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RL.Envs.environment.env.observation_space">
+<code class="descname">observation_space</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/RL/Envs/environment.html#env.observation_space"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RL.Envs.environment.env.observation_space" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RL.Envs.environment.env.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/RL/Envs/environment.html#env.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RL.Envs.environment.env.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RL.Envs.environment.env.step">
+<code class="descname">step</code><span class="sig-paren">(</span><em>action</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RL/Envs/environment.html#env.step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#RL.Envs.environment.env.step" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-RL.Envs">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-RL.Envs" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">RL.Envs package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-RL.Envs.cliff_walking">RL.Envs.cliff_walking module</a></li>
+<li><a class="reference internal" href="#module-RL.Envs.environment">RL.Envs.environment module</a></li>
+<li><a class="reference internal" href="#module-RL.Envs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="RL.html">RL package</a><ul>
+      <li>Previous: <a href="RL.html" title="previous chapter">RL package</a></li>
+      <li>Next: <a href="RL.Envs.Sensors.html" title="next chapter">RL.Envs.Sensors package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/RL.Envs.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/RL.Envs.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

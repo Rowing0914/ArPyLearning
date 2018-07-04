@@ -11,10 +11,22 @@ So please do not forget to check this out as well! Your star will be appreciated
 
 This allows a user to have an easy prototyping in dev and a maintainance of the connectivity with some webframework like Flask.
 
-# Deep Reinforcement Learning
-## DQN(Deep Q Network)
-- check the code inside `./DRL/src/app.py`
-- Agent is defined in DQN.py
+# Usage
+- Navigate to `skeches/prototype` and open the `prototype.ino` on Arduino IDE
+- Confirm it and load it to your Arduino
+
+# Python Version
+We have tested the modules with 3.6.x
+
+# Package Structure
+- docs: Maintenance Document Purpose , we are using Sphinx for documenting
+- publish: Document Storage, feel free to refer to `index.html`
+- skeches: Containing the core wrapper for Arduino
+- src: Containing the python wrapper of the skeches in Arduino
+
+# Basic Maintenance Rule
+- update the docs: `bash update_docs.sh`
+- create the docs: `bash gen_docs.sh`
 
 # Arduino Control
 ## Simple usage example (LED blink)
@@ -195,8 +207,3 @@ print('EEPROM size {size}'.format(size=board.EEPROM.size()))
 **Misc**
 
 - `Arduino.close()` closes serial connection to the Arduino.
-
-## To-do list:
-1. Check examples.py and setup.py again in example directory
-2. finish implementing the DQN or some Deep Reinforcement Learning methods
-

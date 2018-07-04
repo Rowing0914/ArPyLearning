@@ -1,0 +1,153 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Example.examples &#8212; src  documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for Example.examples</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="kn">from</span> <span class="nn">ArPyLearning.arduino</span> <span class="k">import</span> <span class="n">Arduino</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+
+<div class="viewcode-block" id="Blink"><a class="viewcode-back" href="../../Example.html#Example.examples.Blink">[docs]</a><span class="k">def</span> <span class="nf">Blink</span><span class="p">(</span><span class="n">led_pin</span><span class="p">,</span> <span class="n">baud</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Blinks an LED in 1 sec intervals</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">board</span> <span class="o">=</span> <span class="n">Arduino</span><span class="p">(</span><span class="n">baud</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">)</span>
+    <span class="n">board</span><span class="o">.</span><span class="n">pinMode</span><span class="p">(</span><span class="n">led_pin</span><span class="p">,</span> <span class="s2">&quot;OUTPUT&quot;</span><span class="p">)</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">board</span><span class="o">.</span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">led_pin</span><span class="p">,</span> <span class="s2">&quot;LOW&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">board</span><span class="o">.</span><span class="n">digitalRead</span><span class="p">(</span><span class="n">led_pin</span><span class="p">))</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">board</span><span class="o">.</span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">led_pin</span><span class="p">,</span> <span class="s2">&quot;HIGH&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">board</span><span class="o">.</span><span class="n">digitalRead</span><span class="p">(</span><span class="n">led_pin</span><span class="p">))</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="softBlink"><a class="viewcode-back" href="../../Example.html#Example.examples.softBlink">[docs]</a><span class="k">def</span> <span class="nf">softBlink</span><span class="p">(</span><span class="n">led_pin</span><span class="p">,</span> <span class="n">baud</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fades an LED off and on, using</span>
+<span class="sd">    Arduino&#39;s analogWrite (PWM) function</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">board</span> <span class="o">=</span> <span class="n">Arduino</span><span class="p">(</span><span class="n">baud</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">510</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="mi">255</span><span class="p">:</span>
+                <span class="n">k</span> <span class="o">=</span> <span class="mi">510</span> <span class="o">-</span> <span class="n">k</span>
+            <span class="n">board</span><span class="o">.</span><span class="n">analogWrite</span><span class="p">(</span><span class="n">led_pin</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="adjustBrightness"><a class="viewcode-back" href="../../Example.html#Example.examples.adjustBrightness">[docs]</a><span class="k">def</span> <span class="nf">adjustBrightness</span><span class="p">(</span><span class="n">pot_pin</span><span class="p">,</span> <span class="n">led_pin</span><span class="p">,</span> <span class="n">baud</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Adjusts brightness of an LED using a</span>
+<span class="sd">    potentiometer.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">board</span> <span class="o">=</span> <span class="n">Arduino</span><span class="p">(</span><span class="n">baud</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">)</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">board</span><span class="o">.</span><span class="n">analogRead</span><span class="p">(</span><span class="n">pot_pin</span><span class="p">)</span> <span class="o">/</span> <span class="mi">4</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="n">board</span><span class="o">.</span><span class="n">analogWrite</span><span class="p">(</span><span class="n">led_pin</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PingSonar"><a class="viewcode-back" href="../../Example.html#Example.examples.PingSonar">[docs]</a><span class="k">def</span> <span class="nf">PingSonar</span><span class="p">(</span><span class="n">pw_pin</span><span class="p">,</span> <span class="n">baud</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gets distance measurement from Ping)))</span>
+<span class="sd">    ultrasonic rangefinder connected to pw_pin</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">board</span> <span class="o">=</span> <span class="n">Arduino</span><span class="p">(</span><span class="n">baud</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">)</span>
+    <span class="n">pingPin</span> <span class="o">=</span> <span class="n">pw_pin</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="n">board</span><span class="o">.</span><span class="n">pulseIn</span><span class="p">(</span><span class="n">pingPin</span><span class="p">,</span> <span class="s2">&quot;HIGH&quot;</span><span class="p">)</span>
+        <span class="n">inches</span> <span class="o">=</span> <span class="n">duration</span> <span class="o">/</span> <span class="mf">72.</span> <span class="o">/</span> <span class="mf">2.</span>
+        <span class="c1"># cent = duration / 29. / 2.</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">inches</span><span class="p">,</span> <span class="s2">&quot; inches&quot;</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LCD"><a class="viewcode-back" href="../../Example.html#Example.examples.LCD">[docs]</a><span class="k">def</span> <span class="nf">LCD</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">baud</span><span class="p">,</span> <span class="n">ssbaud</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Prints to two-line LCD connected to</span>
+<span class="sd">    pin tx</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">board</span> <span class="o">=</span> <span class="n">Arduino</span><span class="p">(</span><span class="n">baud</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">)</span>
+    <span class="n">board</span><span class="o">.</span><span class="n">SoftwareSerial</span><span class="o">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">tx</span><span class="p">,</span> <span class="n">ssbaud</span><span class="p">)</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">board</span><span class="o">.</span><span class="n">SoftwareSerial</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot; test &quot;</span><span class="p">)</span></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">Blink</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="s1">&#39;9600&#39;</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
