@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>hello</title>
+   </head>
+   <script src="http://code.jquery.com/jquery-2.2.3.min.js"></script>
+   <script type=text/javascript>
+      $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+        $(window).keydown(function(event){
+        console.log(event.key);
+      
+        switch (event.key) {
+        case "ArrowDown":
+          $.get($SCRIPT_ROOT+'/low');
+          break;
+        case "ArrowUp":
+          $.get($SCRIPT_ROOT+'/high');
+          break;
+        case "ArrowLeft":
+          $.get($SCRIPT_ROOT+'/hello');
+          break;
+        default:
+          return;
+      }
+      });
+   </script>
+   <body>
+      <table style="width:100%">
+         <tr>
+            <th>Command</th>
+            <th>Action</th>
+         </tr>
+         <tr>
+            <td>ArrowDown</td>
+            <td>Send "low" to Arduino</td>
+         </tr>
+         <tr>
+            <td>ArrowUp</td>
+            <td>Send "high" to Arduino</td>
+         </tr>
+         <tr>
+            <td>ArrowLeft</td>
+            <td>Checker!</td>
+         </tr>
+      </table>
+   </body>
+</html>
