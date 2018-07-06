@@ -1,5 +1,5 @@
 import numpy as np
-from dist_sensor import get_distance
+from distance_sensor import get_distance
 
 class env:
     def __init__(self, n_episode):
@@ -7,7 +7,7 @@ class env:
         self.action = ['go_further_forward', 'go_forward', 'go_backward', 'go_further_backward']
 
     def _generator(self):
-        return get_distance()
+        return get_distance(1)
         # return np.random.rand(self.n_episode).flatten()
         # return np.random.randint(100)
 
@@ -38,5 +38,5 @@ if __name__ == '__main__':
     env = env(n_episode)
     # print(env.step())
     # print(env.action_space())
-    for i in range(100):
+    while True:
         print(env._generator())
