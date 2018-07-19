@@ -1,7 +1,7 @@
 import time
 from pyfirmata import Arduino, util
 
-board = Arduino('/dev/cu.usbmodem14311')
+board = Arduino('/dev/cu.usbmodem14111')
 
 def Blink(board, pin, signal):
 	board.digital[pin].write(signal)
@@ -16,7 +16,7 @@ if __name__ == '__main__':
 	board.analog[1].enable_reporting()
 	while True:
 		Blink(board, 13, 1)
-		time.sleep(0.05)
+		time.sleep(1)
 		Blink(board, 13, 0)
-		time.sleep(0.05)
-		print(distance_sensor(board, 1))
+		time.sleep(1)
+		# print(distance_sensor(board, 1))
