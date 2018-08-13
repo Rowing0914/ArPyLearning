@@ -5,10 +5,6 @@ communicating with [Arduino microcontroller boards](http://www.arduino.cc/) from
 standard serial IO, either over a physical wire 
 or wirelessly. It is written using a custom protocol, similar to [Firmata](http://firmata.org/wiki/Main_Page).
 
-Basically this project is hugely inspired by the great repo below.  
-[**Python-Arduino-Command-API**](https://github.com/thearn/Python-Arduino-Command-API)
-So please do not forget to check this out as well! Your star will be appreciated!
-
 This allows a user to have an easy prototyping in dev and a maintainance of the connectivity with some webframework like Flask.
 
 # Deep Reinforcement Learning
